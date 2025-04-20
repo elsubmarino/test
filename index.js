@@ -23,8 +23,19 @@ app.get("/api/hello", function (req, res) {
   res.json({ greeting: "hello API" });
 });
 
+app.get("/api", (req, res) => {
+  const date = new Date();
+  const json = {
+    unix: date.getTime(),
+    utc: date.toUTCString(),
+  };
+  res.json(json);
+});
+
 app.get("/api/:val", (req, res) => {
   const { val } = req.params;
+  console.log(val);
+  if (val === "") val = new Date().getTime();
   const pattern = /^(\d{4}-\d{2}-\d{2}$)|(^\d{13}$)/;
   const result = pattern.exec(val);
   if (result) {
