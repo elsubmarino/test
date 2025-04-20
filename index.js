@@ -34,22 +34,34 @@ app.get("/api", (req, res) => {
 
 app.get("/api/:val", (req, res) => {
   const { val } = req.params;
-  console.log(val);
-  if (val === "") val = new Date().getTime();
-  const pattern = /^(\d{4}-\d{2}-\d{2}$)|(^\d{13}$)/;
-  const result = pattern.exec(val);
-  if (result) {
-    const date = new Date(result[2] ? Number(result[2]) : result[1]);
-    const json = {
-      unix: date.getTime(),
-      utc: date.toUTCString(),
-    };
-    res.json(json);
-  } else {
+  //const pattern = /^(\d{4}-\d{2}-\d{2}$)|(^\d{13}$)/;
+  //const result = pattern.exec(val);
+  try {
+    const result = new Date(val);
+    if (result instanceof Date && isNaN(result)) {
+      res.json({
+        error: "Invalid Date",
+      });
+    } else {
+      const json = {
+        unix: result.getTime(),
+        utc: result.toUTCString(),
+      };
+      res.json(json);
+    }
+  } catch (e) {
     res.json({
       error: "Invalid Date",
     });
   }
+
+  // console.log(result);
+  // if (result) {
+  //   //const date = new Date(result[2] ? Number(result[2]) : result[1]);
+
+  // } else {
+
+  // }
 
   //console.log(req.params.val);
 });
