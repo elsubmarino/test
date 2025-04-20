@@ -37,7 +37,7 @@ app.get("/api/:val", (req, res) => {
   //const pattern = /^(\d{4}-\d{2}-\d{2}$)|(^\d{13}$)/;
   //const result = pattern.exec(val);
   try {
-    if (val.test(/^\d{13}$/)) val = Number(val);
+    if (/^\d{13}$/.test(val)) val = Number(val);
     const result = new Date(val);
     if (result instanceof Date && isNaN(result)) {
       res.json({
